@@ -19,14 +19,9 @@ def create_excel_file(file_path):
     
     return wb
 
-#def add_data_to_excel()
-
-#print("Hello world")
-#print("I'm making this change on my branch")
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
     filename = "food_log.xlsx"  # Excel file name
     file_path = os.path.join(script_dir, filename)
     create_excel_file(file_path)
-    #add_data_to_excel(filename)
