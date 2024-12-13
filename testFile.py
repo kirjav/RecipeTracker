@@ -19,9 +19,20 @@ def create_excel_file(file_path):
     
     return wb
 
+def question_prompt(workbook):
+    sheet = workbook.active
+    sheet.append(["test", "awoo"])
+
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
     filename = "food_log.xlsx"  # Excel file name
     file_path = os.path.join(script_dir, filename)
-    create_excel_file(file_path)
+    wb = create_excel_file(file_path)
+    question_prompt(wb)
+    wb.save(file_path)
+
+    ## what do I want?
+    # end goal: Easy to access GUI where I can fill in fields that will be added to the excel sheet. 
+    # What data do I want to collect?
+    # Recipe Name, Notes, When I made it, Recipe Link, Level of Effort
