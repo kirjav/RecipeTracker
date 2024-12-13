@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
     ## GUI SET UP
     root = tb.Window(themename="superhero")
-    root.geometry("600x450") 
+    root.geometry("1000x600") 
     root.title("Recipe Tracker")
         
     root.grid_rowconfigure(0, weight=1)
