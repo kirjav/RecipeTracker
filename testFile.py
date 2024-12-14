@@ -28,7 +28,7 @@ def create_excel_file(file_path):
         wb = Workbook()
         sheet = wb.active
         # Define headers for the food tracking sheet
-        sheet.append(["Date", "Recipe Link", "Dish Name", "Cooking Method", "Notes", "Enjoyment Rating", "Ease of Preparation", "How well did it hold / freeze", ])
+        sheet.append(["Date", "Recipe Link", "Dish Name", "Cooking Method", "Notes", "Enjoyment Rating", "Ease of Preparation", "Meal Prep Compatability", ])
         wb.save(file_path)
         print(f"Workbook '{file_path}' created.")
     
@@ -59,7 +59,7 @@ def validate_numeric_input(P):
         return False
     
 def question_prompt(workbook, file_path):
-    questions = [["Date", QuestionType.Date], ["Recipe Link?", QuestionType.TextBox], ["Dish Name", QuestionType.TextBox], ["Cooking Method", QuestionType.ComboBox], ["Any Notes?", QuestionType.TextBox], ["Rate your Enjoyment 1-10", QuestionType.ValuePicker], ["Ease of Preperation", QuestionType.ValuePicker], ["Fridge/Freezer compatible?", QuestionType.KeepingValues]]
+    questions = [["Date", QuestionType.Date], ["Recipe Link:", QuestionType.TextBox], ["Dish Name:", QuestionType.TextBox], ["Cooking Method:", QuestionType.ComboBox], ["Notes:", QuestionType.TextBox], ["Enjoyment", QuestionType.ValuePicker], ["Ease of Preperation", QuestionType.ValuePicker], ["Fridge/Freezer compatible?", QuestionType.KeepingValues]]
     entries = {}
     # Text color)   
     for i, question in enumerate(questions):
@@ -100,7 +100,7 @@ def question_prompt(workbook, file_path):
                 tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 listbox = tk.Listbox(questionContainer, width=30, selectmode=tk.MULTIPLE)
                 listbox.grid(row=i, column=1, pady=5, sticky="e")
-                items = ["Item 1", "Item 2", "Item 3", "Item 4"]
+                items = ["Freezes well", "Freezes Poorly", "Holds well in Fridge", "Does not hold well in Fridge"]
                 for item in items:
                     listbox.insert(tk.END, item)
                 entries[question[0]] = listbox
