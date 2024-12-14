@@ -7,6 +7,7 @@ import ttkbootstrap as tb
 from tkcalendar import DateEntry
 from enum import Enum, auto
 
+#Enums to help define question Types and filter based on them. 
 class QuestionType(Enum):
     Date = auto(), # calendar / date picker
     ValuePicker = auto(), # Spin Box Widget
@@ -15,8 +16,6 @@ class QuestionType(Enum):
     ComboBox = auto() # ComboBox / Preselect Option picker
     KeepingValues = auto() # value picker based on how well it holds in fridge / freezer
     
-
-
 # Function to create a new Excel file with headers if it doesn't exist
 def create_excel_file(file_path):
     try:
@@ -34,6 +33,7 @@ def create_excel_file(file_path):
     
     return wb
 
+#Submit Answers button parses the entries, clears the input fields and saves the answers to your workbook 
 def submit_answers(workbook, entries, file_path):
     sheet = workbook.active
     recipeData = []
@@ -51,7 +51,7 @@ def submit_answers(workbook, entries, file_path):
     sheet.append(recipeData)
     workbook.save(file_path)
     
-    
+# Function ensures that you can only enter numeric input into the text field    
 def validate_numeric_input(P):
     if P == "" or P.isdigit():
         return True
@@ -60,43 +60,42 @@ def validate_numeric_input(P):
     
 def question_prompt(workbook, file_path):
     questions = [["Date", QuestionType.Date], ["Recipe Link:", QuestionType.TextBox], ["Dish Name:", QuestionType.TextBox], ["Cooking Method:", QuestionType.ComboBox], ["Notes:", QuestionType.TextBox], ["Enjoyment", QuestionType.ValuePicker], ["Ease of Preperation", QuestionType.ValuePicker], ["Fridge/Freezer compatible?", QuestionType.KeepingValues]]
-    entries = {}
-    # Text color)   
+    entries = {}  
     for i, question in enumerate(questions):
         match question[1]:
-            case QuestionType.Date:
+            case QuestionType.Date: #Date Entry Widget
                 tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 date_entry = tb.DateEntry(questionContainer, width=30, bootstyle="success")
                 date_entry.grid(row=i, column=1, pady=5, sticky="e")
-                entries[question[0]] = date_entry.entry  # Store the date entry widget
+                entries[question[0]] = date_entry.entry 
                 
-            case QuestionType.TextBox:
+            case QuestionType.TextBox: #Text Box Widget
                 tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 entry = tk.Entry(questionContainer, width=30, bg="#3F3F3F", fg="white")
                 entry.grid(row=i, column=1, pady=5, sticky="e")
                 entries[question[0]] = entry
                 
-            case QuestionType.Numeric:
+            case QuestionType.Numeric: #Text Box Widget with Numeric filter
                 tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 vcmd = (root.register(validate_numeric_input), '%P')
                 entry = tk.Entry(questionContainer, validate="key", validatecommand=vcmd, bg="#3F3F3F", fg="white", width=30,)
                 entry.grid(row=i, column=1, pady=5, sticky="e")
                 entries[question[0]] = entry
                 
-            case QuestionType.ComboBox:
+            case QuestionType.ComboBox: #Combo Box
                 tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 entry = ttk.Combobox(questionContainer, values=["Sheet Pan", "Combo", "One Pot"], width=30)
                 entry.grid(row=i, column=1, pady=5, sticky="e")
                 entries[question[0]] = entry
                 
-            case QuestionType.ValuePicker:
+            case QuestionType.ValuePicker: #1-10 Spin Box
                 tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 entry = ttk.Spinbox(questionContainer, from_=0, to=10, width=30)
                 entry.grid(row=i, column=1, pady=5, sticky="e")
                 #entry.configure(background="black")
                 entries[question[0]] = entry
             
-            case QuestionType.KeepingValues:
+            case QuestionType.KeepingValues: #Multi-select value picker (listbox)
                 tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 listbox = tk.Listbox(questionContainer, width=30, selectmode=tk.MULTIPLE)
                 listbox.grid(row=i, column=1, pady=5, sticky="e")
@@ -105,7 +104,7 @@ def question_prompt(workbook, file_path):
                     listbox.insert(tk.END, item)
                 entries[question[0]] = listbox
                 
-        
+    #Submit Button    
     submit_btn = ttk.Button(questionContainer, text="Submit", command=lambda: submit_answers(workbook, entries, file_path), bootstyle="success")
     submit_btn.grid(row=len(questions), column=0, columnspan=2, pady=10)
 
@@ -116,7 +115,7 @@ if __name__ == "__main__":
     file_path = os.path.join(script_dir, filename)
     wb = create_excel_file(file_path)
 
-    ## GUI SET UP
+    ### GUI SET UP ###
     root = tb.Window(themename="superhero")
     root.geometry("1000x600") 
     root.title("Recipe Tracker")
