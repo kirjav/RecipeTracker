@@ -59,7 +59,7 @@ def validate_numeric_input(P):
         return False
     
 def question_prompt(workbook, file_path):
-    questions = [["Date", QuestionType.Date], ["Recipe Link:", QuestionType.TextBox], ["Dish Name:", QuestionType.TextBox], ["Cooking Method:", QuestionType.ComboBox], ["Notes:", QuestionType.TextBox], ["Enjoyment", QuestionType.ValuePicker], ["Ease of Preperation", QuestionType.ValuePicker], ["Fridge/Freezer compatible?", QuestionType.KeepingValues]]
+    questions = [["Date", QuestionType.Date], ["Recipe Link:", QuestionType.TextBox], ["Dish Name:", QuestionType.TextBox], ["Cooking Method:", QuestionType.ComboBox, ["Sheet Pan", "Combo", "One Pot"]], ["Notes:", QuestionType.TextBox], ["Enjoyment", QuestionType.ValuePicker, 1, 10], ["Ease of Preperation", QuestionType.ValuePicker, 1, 10], ["Fridge/Freezer compatible?", QuestionType.KeepingValues, ["Freezes well", "Freezes Poorly", "Holds well in Fridge", "Does not hold well in Fridge"]]]
     entries = {}  
     for i, question in enumerate(questions):
         match question[1]:
@@ -84,24 +84,42 @@ def question_prompt(workbook, file_path):
                 
             case QuestionType.ComboBox: #Combo Box
                 tk.Label(questionContainer, text=question[0], anchor="w").grid(row=i, column=0, sticky="w", pady=5, padx=15)
-                entry = ttk.Combobox(questionContainer, values=["Sheet Pan", "Combo", "One Pot"], width=30)
-                entry.grid(row=i, column=1, pady=5, sticky="e")
-                entries[question[0]] = entry
+                try:
+                    entry = ttk.Combobox(questionContainer, values=question[2], width=30)
+                    entry.grid(row=i, column=1, pady=5, sticky="e")
+                    entries[question[0]] = entry
+                except:
+                    print("Question {question[0]}: Please remember to give a range of options for the combobox.")
+                    entry = ttk.Combobox(questionContainer, values=["Missing Options"], width=30)
+                    entry.grid(row=i, column=1, pady=5, sticky="e")
+                    entries[question[0]] = entry
+                    
                 
             case QuestionType.ValuePicker: #1-10 Spin Box
                 tk.Label(questionContainer, text=question[0], anchor="w").grid(row=i, column=0, sticky="w", pady=5, padx=15)
-                entry = ttk.Spinbox(questionContainer, from_=0, to=10, width=30)
-                entry.grid(row=i, column=1, pady=5, sticky="e")
-                entries[question[0]] = entry
+                try:
+                    entry = ttk.Spinbox(questionContainer, from_=question[2], to=question[3], width=30)
+                    entry.grid(row=i, column=1, pady=5, sticky="e")
+                    entries[question[0]] = entry
+                except:
+                    print("Question {question[0]}: Please remember to give a range for the Spin Box! Defaulting to 1-10.")
+                    entry = ttk.Spinbox(questionContainer, from_=1, to=10, width=30)
+                    entry.grid(row=i, column=1, pady=5, sticky="e")
+                    entries[question[0]] = entry
             
             case QuestionType.KeepingValues: #Multi-select value picker (listbox)
                 tk.Label(questionContainer, text=question[0], anchor="w").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 listbox = tk.Listbox(questionContainer, width=30, selectmode=tk.MULTIPLE)
                 listbox.grid(row=i, column=1, pady=5, sticky="e")
-                items = ["Freezes well", "Freezes Poorly", "Holds well in Fridge", "Does not hold well in Fridge"]
-                for item in items:
-                    listbox.insert(tk.END, item)
-                entries[question[0]] = listbox
+                try:
+                    for item in question[2]:
+                        listbox.insert(tk.END, item)
+                    entries[question[0]] = listbox
+                except:
+                    print("Question {question[0]}: Please remember to attach a list of options for the list box!")
+                    for item in ["Missing Options!"]:
+                        listbox.insert(tk.END, item)
+                    entries[question[0]] = listbox
                 
     #Submit Button    
     submit_btn = ttk.Button(questionContainer, text="Submit", command=lambda: submit_answers(workbook, entries, file_path), bootstyle="success")
