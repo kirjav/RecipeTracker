@@ -27,7 +27,7 @@ def create_excel_file(file_path):
         wb = Workbook()
         sheet = wb.active
         # Define headers for the food tracking sheet
-        sheet.append(["Date", "Recipe Link", "Dish Name", "Cooking Method", "Notes", "Enjoyment Rating", "Ease of Preparation", "Meal Prep Compatability", ])
+        sheet.append(["Date", "Recipe Link", "Dish Name", "Cooking Method", "Notes", "Enjoyment Rating", "Ease of Preparation", "Meal Prep Compatability"])
         wb.save(file_path)
         print(f"Workbook '{file_path}' created.")
     
