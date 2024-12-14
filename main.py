@@ -64,39 +64,38 @@ def question_prompt(workbook, file_path):
     for i, question in enumerate(questions):
         match question[1]:
             case QuestionType.Date: #Date Entry Widget
-                tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
+                tk.Label(questionContainer, text=question[0], anchor="w").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 date_entry = tb.DateEntry(questionContainer, width=30, bootstyle="success")
                 date_entry.grid(row=i, column=1, pady=5, sticky="e")
                 entries[question[0]] = date_entry.entry 
                 
             case QuestionType.TextBox: #Text Box Widget
-                tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
-                entry = tk.Entry(questionContainer, width=30, bg="#3F3F3F", fg="white")
+                tk.Label(questionContainer, text=question[0], anchor="w").grid(row=i, column=0, sticky="w", pady=5, padx=15)
+                entry = tk.Entry(questionContainer, width=30)
                 entry.grid(row=i, column=1, pady=5, sticky="e")
                 entries[question[0]] = entry
                 
             case QuestionType.Numeric: #Text Box Widget with Numeric filter
-                tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
+                tk.Label(questionContainer, text=question[0], anchor="w").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 vcmd = (root.register(validate_numeric_input), '%P')
-                entry = tk.Entry(questionContainer, validate="key", validatecommand=vcmd, bg="#3F3F3F", fg="white", width=30,)
+                entry = tk.Entry(questionContainer, validate="key", validatecommand=vcmd, width=30,)
                 entry.grid(row=i, column=1, pady=5, sticky="e")
                 entries[question[0]] = entry
                 
             case QuestionType.ComboBox: #Combo Box
-                tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
+                tk.Label(questionContainer, text=question[0], anchor="w").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 entry = ttk.Combobox(questionContainer, values=["Sheet Pan", "Combo", "One Pot"], width=30)
                 entry.grid(row=i, column=1, pady=5, sticky="e")
                 entries[question[0]] = entry
                 
             case QuestionType.ValuePicker: #1-10 Spin Box
-                tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
+                tk.Label(questionContainer, text=question[0], anchor="w").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 entry = ttk.Spinbox(questionContainer, from_=0, to=10, width=30)
                 entry.grid(row=i, column=1, pady=5, sticky="e")
-                #entry.configure(background="black")
                 entries[question[0]] = entry
             
             case QuestionType.KeepingValues: #Multi-select value picker (listbox)
-                tk.Label(questionContainer, text=question[0], anchor="w", bg="#606060", fg="white").grid(row=i, column=0, sticky="w", pady=5, padx=15)
+                tk.Label(questionContainer, text=question[0], anchor="w").grid(row=i, column=0, sticky="w", pady=5, padx=15)
                 listbox = tk.Listbox(questionContainer, width=30, selectmode=tk.MULTIPLE)
                 listbox.grid(row=i, column=1, pady=5, sticky="e")
                 items = ["Freezes well", "Freezes Poorly", "Holds well in Fridge", "Does not hold well in Fridge"]
@@ -124,13 +123,13 @@ if __name__ == "__main__":
     root.grid_columnconfigure(0, weight=1)
 
     # Add a frame that scales
-    mainframe = tk.Frame(root, bg="#3D3D3D")
+    mainframe = tk.Frame(root)
     mainframe.grid(row=0, column=0, sticky="nsew")
     mainframe.grid_rowconfigure(0, weight=1)
     mainframe.grid_columnconfigure(0, weight=1)
     
     # Create frame within center_frame
-    questionContainer = tk.Frame(mainframe, bg="#606060")
+    questionContainer = tk.Frame(mainframe)
     questionContainer.grid(row=0, column=0, padx=50, pady=50)
     questionContainer.grid_rowconfigure(0, weight=0)
     questionContainer.grid_columnconfigure(0, weight=0)
