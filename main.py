@@ -89,7 +89,7 @@ def question_prompt(workbook, file_path):
                     entry.grid(row=i, column=1, pady=5, sticky="e")
                     entries[question[0]] = entry
                 except:
-                    print("Question {question[0]}: Please remember to give a range of options for the combobox.")
+                    print("Question " + question[0] + ": Please remember to give a range of options for the combobox.")
                     entry = ttk.Combobox(questionContainer, values=["Missing Options"], width=30)
                     entry.grid(row=i, column=1, pady=5, sticky="e")
                     entries[question[0]] = entry
@@ -102,7 +102,7 @@ def question_prompt(workbook, file_path):
                     entry.grid(row=i, column=1, pady=5, sticky="e")
                     entries[question[0]] = entry
                 except:
-                    print("Question {question[0]}: Please remember to give a range for the Spin Box! Defaulting to 1-10.")
+                    print("Question " + question[0] + ": Please remember to give a range for the Spin Box! Defaulting to 1-10.")
                     entry = ttk.Spinbox(questionContainer, from_=1, to=10, width=30)
                     entry.grid(row=i, column=1, pady=5, sticky="e")
                     entries[question[0]] = entry
@@ -116,7 +116,7 @@ def question_prompt(workbook, file_path):
                         listbox.insert(tk.END, item)
                     entries[question[0]] = listbox
                 except:
-                    print("Question {question[0]}: Please remember to attach a list of options for the list box!")
+                    print("Question " + question[0] + ": Please remember to attach a list of options for the list box!")
                     for item in ["Missing Options!"]:
                         listbox.insert(tk.END, item)
                     entries[question[0]] = listbox
